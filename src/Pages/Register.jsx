@@ -29,7 +29,7 @@ import { useNavigate } from "react-router-dom";
       userRole:userRole
      })
         .then(res => {
-          navigate("/main")
+          navigate('/main',{state:res.data});
           console.log(res)
         })
         .catch(err =>{
@@ -64,7 +64,7 @@ import { useNavigate } from "react-router-dom";
         <MDBInput wrapperClass='mb-4' label='Password' id='form2' type='password' onChange={e=>{
         setuserPassword(e.target.value);}}/>
         
-        <MDBBtn className="mb-4" href="main" onClick={registerApi}>Register</MDBBtn>
+        <MDBBtn className="mb-4"  onClick={registerApi}>Register</MDBBtn>
        
         <div className="text-center">
           <p>Already have an account? <a href="/">Login</a></p>

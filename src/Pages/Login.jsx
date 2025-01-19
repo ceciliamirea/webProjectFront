@@ -20,11 +20,15 @@ function Login() {
     userPassword: userPassword
    })
       .then(res => {
-        navigate("/main")
+        navigate('/main',{state:res.data});
         console.log(res)
       })
       .catch(err =>{
-        console.log(err)
+        if(err.response.data.msg=="User not found"){
+          alert("User not found");
+          
+        }
+        console.log(err.response.data.msg)
       })
   }
   return (
