@@ -62,8 +62,8 @@ function MainPage() {
     }
 
     async function joinActivity() {
-  
-      await axios.get(`http://localhost:3000/api/activityAccess/${joinActivitystate}`)
+      console.log(`http://localhost:3000/api/activityAccess/${joinActivitystate}/${location.state._id}`)
+      await axios.get(`http://localhost:3000/api/activityAccess/${joinActivitystate}/${location.state._id}`)
          .then(res => {
 
            console.log(res)
@@ -80,16 +80,29 @@ function MainPage() {
        }
 
        useEffect(() => {
-            
-       axios.get(`http://localhost:3000/api/activitiesPerUser/${location.state._id}`)
-      .then(res => {
-        setActivities(res.data)
-        console.log(res)
-      })
-      .catch(err =>{
-       alert(err.response.data.msg)
-        console.log(err)
-      })
+        if(location.state.userRole == "Teacher"){
+          axios.get(`http://localhost:3000/api/activitiesPerUser/${location.state._id}`)
+          .then(res => {
+            setActivities(res.data)
+            console.log(res)
+          })
+          .catch(err =>{
+           alert(err.response.data.msg)
+            console.log(err)
+          })
+        }
+        else {
+          axios.get(`http://localhost:3000/api/activitiesPerStudent/${location.state._id}`)
+          .then(res => {
+            setActivities(res.data)
+            console.log(res)
+          })
+          .catch(err =>{
+           alert(err.response.data.msg)
+            console.log(err)
+          })
+        }
+
       }, []);
   return (
     <div>MainPage
@@ -172,6 +185,37 @@ Join</MDBBtn></div>
           </Typography>
           <Typography variant="body3" sx={{ color: 'text.secondary' }}>
            {item.startTime}
+          </Typography>
+          <br></br>
+          <Typography variant="body3" sx={{ color: 'text.secondary' }}>
+           {item.activityCode}
+          </Typography>
+        </CardContent>
+      </CardActionArea>
+    </Card>
+    );
+  })
+}
+</Box>
+<Box>
+{
+  (location.state?.userRole == "Student") && activities?.map(item =>{
+    return (
+      <Card key={item._id} sx={{ maxWidth: 345,border: 1,marginLeft:2 }}>
+      <CardActionArea>
+        <CardContent>
+          <Typography gutterBottom variant="h5" component="div">
+            {item.activityname}
+          </Typography>
+          <Typography variant="body2" sx={{ color: 'text.secondary' }}>
+           {item.activityDescription}
+          </Typography>
+          <Typography variant="body3" sx={{ color: 'text.secondary' }}>
+           {item.startTime}
+          </Typography>
+          <br></br>
+          <Typography variant="body3" sx={{ color: 'text.secondary' }}>
+           {item.activityCode}
           </Typography>
         </CardContent>
       </CardActionArea>
